@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <form action="/api">
-      <input type="file" id="myFile" name="filename">
+    <form method="POST" action="/api">
+      <input type="file" id="myFile">
       <input type="submit">
     </form>
   </div>
