@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <form method="POST" action="/api">
-      <input type="file" id="myFile">
-      <input type="submit">
+    <form action="/api" enctype="multipart/form-data" method="post">
+      <input type="file" name="csv" id="csv" />
+      <input type="submit" value="upload" />
     </form>
   </div>
 </template>
