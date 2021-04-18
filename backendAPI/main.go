@@ -1,28 +1,30 @@
 package main
 
 import (
+	"encoding/csv"
+	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 type User struct {
-	Email  string  `json:"email"`
-	Phone  int     `json:"phone_number"`
-	Parcel float32 `json:"parcel_weight"`
+	Email  string `json:"email"`
+	Phone  string `json:"phone_number"`
+	Parcel string `json:"parcel_weight"`
 }
 
 //Download uploaded file and return file name
-func downloadFile(r *http.Request) string {
+func downloadFile(r *http.Request) (string, error) {
 	// FormFile returns the first file for the given key `csv`
 	// it also returns the FileHeader so we can get the Filename,
 	// the Header and the size of the file
 	file, _, err := r.FormFile("csv")
 	if err != nil {
-		fmt.Println("Error Retrieving the File")
-		fmt.Println(err)
-		return ""
+		return "", err
 	}
 	defer file.Close()
 
@@ -43,13 +45,37 @@ func downloadFile(r *http.Request) string {
 	// write this byte array to our temporary file
 	tempFile.Write(fileBytes)
 	// return that we have successfully uploaded our file!
-	return tempFile.Name()
+	return tempFile.Name(), nil
 }
 
 func procCSV(w http.ResponseWriter, r *http.Request) {
-	fileName := downloadFile(r)
+	fileName, err := downloadFile(r)
+	if err != nil {
+		log.Panic(err)
+	}
 
-	fmt.Fprintln(w, fileName)
+	csvFile, err := os.Open(fileName)
+	if err != nil {
+		fmt.Println(err)
+	}
+	reader := csv.NewReader(csvFile)
+
+	var user []User
+	for {
+		line, err := reader.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			log.Fatal(err)
+		}
+		user = append(user, User{
+			Email:  line[1],
+			Phone:  line[2],
+			Parcel: line[3],
+		})
+	}
+	userJson, _ := json.Marshal(user)
+	fmt.Fprintln(w, string(userJson))
 }
 
 func HandleRequest() {
