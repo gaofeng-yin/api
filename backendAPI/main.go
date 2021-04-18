@@ -48,13 +48,8 @@ func downloadFile(r *http.Request) (string, error) {
 	return tempFile.Name(), nil
 }
 
-func procCSV(w http.ResponseWriter, r *http.Request) {
-	fileName, err := downloadFile(r)
-	if err != nil {
-		log.Panic(err)
-	}
-
-	csvFile, err := os.Open(fileName)
+func csvToJson(filename string) []byte {
+	csvFile, err := os.Open(filename)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -75,7 +70,18 @@ func procCSV(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 	userJson, _ := json.Marshal(user)
-	fmt.Fprintln(w, string(userJson))
+	return userJson
+}
+
+func procCSV(w http.ResponseWriter, r *http.Request) {
+	fileName, err := downloadFile(r)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	slice := csvToJson(fileName)
+
+	fmt.Fprintln(w, string(slice))
 }
 
 func HandleRequest() {
