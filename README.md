@@ -1,3 +1,5 @@
+<h1>Instruction</h1>
+
 1- Init frontend on docker
  
 	cd frontend/
@@ -12,21 +14,21 @@
 
 4- Upload test_file.csv* to see the result 
 
+<br>
+<small>*I created a small cvs file because the one i got from zip file it's all mess up.</small>
 
-*I created a small cvs file because the one i got from zip file it's all mess up.
+<br>
+<br>
 
-
-
-What i did:
-
-	-Create a fronted app with vue.js, really minimalist design, form to upload a csv file and running on port 8080;	
-	-BackedAPI with golang running on port 7000;
-	-Function that handles call from /api;
-	-Download(make a copy) of uploaded file;
-	-Open csv file and read each line;
-	-fill user struct with email, phone, parcel and country which is determined by phone number through regular expression match;
-	-turn slice of user into json;
-	-write to the page all the user in json;
+<h1>What i did:</h1><br>
+	<li>Create a fronted app with vue.js, really minimalist design, form to upload a csv file and running on port 8080;	
+	<li>BackedAPI with golang running on port 7000;
+	<li>Function that handles call from /api;
+	<li>Download(make a copy) of uploaded file;
+	<li>Open csv file and read each line;
+	<li>Fill user struct with email, phone, parcel and country which is determined by phone number through regular expression match;
+	<li>Turn slice of user into Json;
+	<li>Write to the page all the user on Json notation;
 	
 	 
 	
