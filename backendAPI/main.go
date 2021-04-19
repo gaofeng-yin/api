@@ -9,12 +9,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 )
 
 type User struct {
-	Email  string `json:"email"`
-	Phone  string `json:"phone_number"`
-	Parcel string `json:"parcel_weight"`
+	Email   string `json:"email"`
+	Phone   string `json:"phone_number"`
+	Parcel  string `json:"parcel_weight"`
+	Country string `json:"country"`
 }
 
 //Download uploaded file and return file name
@@ -64,24 +66,54 @@ func csvToJson(filename string) []byte {
 			log.Fatal(err)
 		}
 		user = append(user, User{
-			Email:  line[1],
-			Phone:  line[2],
-			Parcel: line[3],
+			Email:   line[1],
+			Phone:   line[2],
+			Parcel:  line[3],
+			Country: getCountry(line[2]),
 		})
 	}
+
 	userJson, _ := json.Marshal(user)
 	return userJson
 }
 
+func getCountry(phone string) string {
+	cameroon, _ := regexp.Match(`237[2368]\d{7,8}$`, []byte(phone))
+	ethiopia, _ := regexp.Match(`251[1-59]\d{8}$`, []byte(phone))
+	morocco, _ := regexp.Match(`212[5-9]\d{8}$`, []byte(phone))
+	mozambique, _ := regexp.Match(`258[28]\d{7,8}$`, []byte(phone))
+	uganda, _ := regexp.Match(`256\d{9}$`, []byte(phone))
+
+	switch {
+	case cameroon:
+		return "Cameroon"
+	case ethiopia:
+		return "Ethiopia"
+	case morocco:
+		return "Morocco"
+	case mozambique:
+		return "Mozambique"
+	case uganda:
+		return "Uganda"
+	}
+
+	return ""
+}
+
 func procCSV(w http.ResponseWriter, r *http.Request) {
+	//download uploaded file
 	fileName, err := downloadFile(r)
 	if err != nil {
 		log.Panic(err)
 	}
 
+	//open file and convert it to json
 	slice := csvToJson(fileName)
 
 	fmt.Fprintln(w, string(slice))
+
+	//inset into database?
+
 }
 
 func HandleRequest() {
