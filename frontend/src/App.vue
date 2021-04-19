@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <form action="/api" enctype="multipart/form-data" method="post">
+    <form action="http://localhost:7000/api" enctype="multipart/form-data" method="post">
       <input type="file" name="csv" id="csv" />
       <input type="submit" value="upload" />
     </form>
