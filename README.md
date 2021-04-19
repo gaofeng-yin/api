@@ -1,12 +1,15 @@
-1- Init frontend on docker 
+1- Init frontend on docker
+ 
 	cd frontend/
 	docker-compose up
 
 2- Initialize backend api on docker
+
 	cd backendAPI/
 	docker-compose up
 
 3- Open a browser and go to the http://localhost:8080
+
 4- Upload test_file.csv* to see the result 
 
 
@@ -15,6 +18,7 @@
 
 
 What i did:
+
 	-Create a fronted app with vue.js, really minimalist design, form to upload a csv file and running on port 8080;	
 	-BackedAPI with golang running on port 7000;
 	-Function that handles call from /api;
