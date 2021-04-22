@@ -14,8 +14,6 @@
 
 4- Upload test_file.csv* to see the result 
 
-<br>
-<small>*I created a small cvs file because the one i got from zip file it's all mess up.</small>
 
 <br>
 <br>
