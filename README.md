@@ -13,9 +13,6 @@
 3- Open a browser and go to the http://localhost:8080
 
 4- Upload test_file.csv* to see the result 
-
-
-<br>
 <br>
 
 <h1>What i did:</h1><br>
